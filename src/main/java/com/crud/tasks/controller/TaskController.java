@@ -35,6 +35,5 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.PUT, value = "createTask")
     public void createTask(TaskDto taskDto) {
-
     }
 }
