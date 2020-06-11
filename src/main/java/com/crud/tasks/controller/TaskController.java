@@ -26,8 +26,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
     public TaskDto getTask(Long taskId) {
-        return new TaskDto(1L, "Test tittle", "Test content");
-
+        return taskMapper.mapToTaskDto(dbService.getTask(taskId));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
@@ -42,5 +41,7 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.POST, value = "createTask")
     public void createTask(TaskDto taskDto) {
+        System.out.println("siema");
     }
 }
+
