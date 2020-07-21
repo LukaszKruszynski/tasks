@@ -32,7 +32,7 @@ public class TrelloClient {
     @Value("${trello.app.token}")
     private String trelloToken;
 
-    public URI buildUrlTrelloBoards() {
+    private URI buildUrlTrelloBoards() {
         URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + trelloMemberId + "/boards")
                 .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
@@ -41,7 +41,7 @@ public class TrelloClient {
                 .build().encode().toUri();
         return url;
     }
-    public URI buildUrlNewCard(TrelloCardDto trelloCardDto) {
+    private URI buildUrlNewCard(TrelloCardDto trelloCardDto) {
         URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/cards")
                 .queryParam("key", trelloAppKey)
                 .queryParam("token", trelloToken)
