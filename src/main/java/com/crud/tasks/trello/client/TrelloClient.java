@@ -48,7 +48,7 @@ public class TrelloClient {
                 .queryParam("name",trelloCardDto.getName())
                 .queryParam("desc",trelloCardDto.getDescription())
                 .queryParam("pos",trelloCardDto.getPos())
-                .queryParam("idList",trelloCardDto.getListId())
+                .queryParam("idList",trelloCardDto.getIdList())
                 .build().encode().toUri();
         return url;
     }
