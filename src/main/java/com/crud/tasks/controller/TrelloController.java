@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/v1/trello")
+@RequestMapping("/v1/trello/")
 public class TrelloController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class TrelloController {
         });
     }
     @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")
-    public CreatedTrelloCard createTrelloCard(TrelloCardDto trelloCardDto) {
+    public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
         return trelloClient.CreateNewCard(trelloCardDto);
     }
 }

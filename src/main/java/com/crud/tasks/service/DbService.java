@@ -29,4 +29,5 @@ public class DbService {
         final Task taskToDelete = taskRepository.findById(taskId).orElseThrow(()-> new TaskNotFoundException(taskId));
         taskRepository.deleteById(taskToDelete.getId());
     }
+
 }
