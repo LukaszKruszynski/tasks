@@ -3,6 +3,7 @@ package com.crud.tasks.trello.client;
 import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
+import com.crud.tasks.trello.config.TrelloConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,33 +26,24 @@ public class TrelloClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrelloClient.class);
 
     @Autowired
+    private TrelloConfig configurator;
+
+    @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${trello.member.id}")
-    private String trelloMemberId;
-
-    @Value("${trello.api.endpoint.prod}")
-    private String trelloApiEndpoint;
-
-    @Value("${trello.app.key}")
-    private String trelloAppKey;
-
-    @Value("${trello.app.token}")
-    private String trelloToken;
-
     private URI buildUrlTrelloBoards() {
-        return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + trelloMemberId + "/boards")
-                .queryParam("key", trelloAppKey)
-                .queryParam("token", trelloToken)
+        return UriComponentsBuilder.fromHttpUrl(configurator.getTrelloApiEndpoint() + "/members/" + configurator.getTrelloMemberId() + "/boards")
+                .queryParam("key", configurator.getTrelloAppKey())
+                .queryParam("token", configurator.getTrelloToken())
                 .queryParam("fields", "name,id")
                 .queryParam("lists", "all")
                 .build().encode().toUri();
     }
 
     private URI buildUrlNewCard(TrelloCardDto trelloCardDto) {
-        return UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/cards")
-                .queryParam("key", trelloAppKey)
-                .queryParam("token", trelloToken)
+        return UriComponentsBuilder.fromHttpUrl(configurator.getTrelloApiEndpoint() + "/cards")
+                .queryParam("key", configurator.getTrelloAppKey())
+                .queryParam("token", configurator.getTrelloToken())
                 .queryParam("name", trelloCardDto.getName())
                 .queryParam("desc", trelloCardDto.getDescription())
                 .queryParam("pos", trelloCardDto.getPos())
@@ -70,7 +62,6 @@ public class TrelloClient {
     }
 
     public CreatedTrelloCard CreateNewCard(TrelloCardDto trelloCardDto) {
-        buildUrlNewCard(trelloCardDto);
         return restTemplate.postForObject(buildUrlNewCard(trelloCardDto), null, CreatedTrelloCard.class);
     }
 }
