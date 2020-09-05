@@ -24,8 +24,7 @@ public class SimpleEmailService {
             javaMailSender.send(mailMessage);
             LOGGER.info("Email send successful");
         } catch (MailException e) {
-            LOGGER.error("Failed to process email sending! ", e.getMessage(), e);
-        }
+            LOGGER.error("Failed to process email sending! ", e.getMessage(), e); }
     }
 
     private SimpleMailMessage createMailMessage(final Mail mail) {
@@ -33,6 +32,7 @@ public class SimpleEmailService {
         message.setSubject(mail.getSubject());
         message.setTo(mail.getMailTo());
         message.setText(mail.getMessage());
+        if (mail.getToCc() != null) message.setCc(mail.getToCc());
         return message;
     }
 }
