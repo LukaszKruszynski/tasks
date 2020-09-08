@@ -30,7 +30,7 @@ public class EmailScheduler {
         emailService.send(new Mail(
                 adminConfig.getAdminMail(),
                 SUBJECT,
-                "Currently in database you got: " + count + " " + numeral + ".", "")
+                "Currently in database you got: " + count + " " + numeral + ".", null)
         );
     }
 }

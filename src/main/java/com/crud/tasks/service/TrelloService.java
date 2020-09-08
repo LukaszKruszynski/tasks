@@ -9,7 +9,6 @@ import com.crud.tasks.trello.client.TrelloClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.Subject;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +33,11 @@ public class TrelloService {
     public CreatedTrelloCard createTrelloCard(final TrelloCardDto trelloCardDto) {
         CreatedTrelloCard newCard = trelloClient.CreateNewCard(trelloCardDto);
 
-        Optional.ofNullable(newCard).isPresent(card -> emailService.send(new Mail(
-                adminConfig.getAdminMail(),
-                SUBJECT,
-                "New card: " + trelloCardDto.getName() + " has been created on your Trello account",
-                "")));
+//        Optional.ofNullable(newCard).isPresent(card -> emailService.send(new Mail(
+//                adminConfig.getAdminMail(),
+//                SUBJECT,
+//                "New card: " + trelloCardDto.getName() + " has been created on your Trello account",
+//                "")));
         return newCard;
     }
-
 }
