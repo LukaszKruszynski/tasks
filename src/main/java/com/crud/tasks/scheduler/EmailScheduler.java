@@ -25,8 +25,7 @@ public class EmailScheduler {
     @Scheduled(cron = "0 0 10 * * *")
     public void sendInformationEmail() {
         long count = taskRepository.count();
-        String numeral = "tasks";
-        if (count == 1) numeral = "task";
+        String numeral = (count == 1) ? "task" : "tasks";
         emailService.send(new Mail(
                 adminConfig.getAdminMail(),
                 SUBJECT,
