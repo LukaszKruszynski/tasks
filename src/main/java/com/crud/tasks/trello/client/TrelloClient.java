@@ -53,6 +53,7 @@ public class TrelloClient {
     }
 
     public CreatedTrelloCard CreateNewCard(TrelloCardDto trelloCardDto) {
+        System.out.println(buildUrlNewCard(trelloCardDto));
         return restTemplate.postForObject(buildUrlNewCard(trelloCardDto), null, CreatedTrelloCard.class);
     }
 }
