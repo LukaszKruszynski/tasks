@@ -1,7 +1,6 @@
 package com.crud.tasks.trello.client;
 
-import com.crud.tasks.controller.TrelloController;
-import com.crud.tasks.domain.CreatedTrelloCard;
+import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.trello.config.TrelloConfig;
@@ -13,8 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -73,15 +70,15 @@ public class TrelloClientTest {
 
         URI uri = new URI("http://test.com/cards?key=test&token=test&name=Test%20task&desc=Test%20Description&pos=top&idList=test_id");
 
-        CreatedTrelloCard createdTrelloCard = new CreatedTrelloCard(
+        CreatedTrelloCardDto createdTrelloCard = new CreatedTrelloCardDto(
                 "1",
                 "Test task",
                 "http://test.com"
         );
-        Mockito.when(restTemplate.postForObject(uri, null, CreatedTrelloCard.class)).thenReturn(createdTrelloCard);
+        Mockito.when(restTemplate.postForObject(uri, null, CreatedTrelloCardDto.class)).thenReturn(createdTrelloCard);
 
         //When
-        CreatedTrelloCard card = client.CreateNewCard(trelloCardDto);
+        CreatedTrelloCardDto card = client.CreateNewCard(trelloCardDto);
 
         //Then
         Assert.assertEquals("1", card.getId());

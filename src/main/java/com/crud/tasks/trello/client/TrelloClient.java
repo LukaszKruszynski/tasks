@@ -1,6 +1,6 @@
 package com.crud.tasks.trello.client;
 
-import com.crud.tasks.domain.CreatedTrelloCard;
+import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
 import com.crud.tasks.trello.config.TrelloConfig;
@@ -52,8 +52,8 @@ public class TrelloClient {
         return Arrays.asList(Optional.ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
     }
 
-    public CreatedTrelloCard CreateNewCard(TrelloCardDto trelloCardDto) {
+    public CreatedTrelloCardDto CreateNewCard(TrelloCardDto trelloCardDto) {
         System.out.println(buildUrlNewCard(trelloCardDto));
-        return restTemplate.postForObject(buildUrlNewCard(trelloCardDto), null, CreatedTrelloCard.class);
+        return restTemplate.postForObject(buildUrlNewCard(trelloCardDto), null, CreatedTrelloCardDto.class);
     }
 }
