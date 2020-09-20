@@ -7,93 +7,96 @@ import com.crud.tasks.domain.TrelloListDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-@SpringBootTest
-@RunWith(SpringRunner.class)
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class TrelloBoardMapperTestSuite {
-    @Autowired
+    @Mock
     TrelloBoardMapper mapper;
 
     private TrelloBoard trelloBoardId1;
     private TrelloBoard trelloBoardId2;
-    private TrelloBoardDto trelloBoardDtoId3;
-    private TrelloBoardDto trelloBoardDtoId4;
+    private TrelloBoardDto trelloBoardDtoId1;
+    private TrelloBoardDto trelloBoardDtoId2;
     private List<TrelloBoard> boardsList;
     private List<TrelloBoardDto> boardDtosList;
 
     @Before
     public void setup() {
-        this.trelloBoardId1 = new TrelloBoard("1", "test name id 1", new ArrayList<TrelloList>());
-        this.trelloBoardId2 = new TrelloBoard("2", "test name id 2", new ArrayList<TrelloList>());
-        this.trelloBoardDtoId3 = new TrelloBoardDto("3", "test name dto id 3", new ArrayList<TrelloListDto>());
-        this.trelloBoardDtoId4 = new TrelloBoardDto("4", "test name dto id 4", new ArrayList<TrelloListDto>());
+        this.trelloBoardId1 = new TrelloBoard("1", "test name id 1", new ArrayList<>());
+        this.trelloBoardId2 = new TrelloBoard("2", "test name id 2", new ArrayList<>());
+        this.trelloBoardDtoId1 = new TrelloBoardDto("1", "test name id 1", new ArrayList<>());
+        this.trelloBoardDtoId2 = new TrelloBoardDto("2", "test name id 2", new ArrayList<>());
         this.boardsList = new ArrayList<>();
         this.boardDtosList = new ArrayList<>();
         boardsList.add(trelloBoardId1);
         boardsList.add(trelloBoardId2);
-        boardDtosList.add(trelloBoardDtoId3);
-        boardDtosList.add(trelloBoardDtoId4);
+        boardDtosList.add(trelloBoardDtoId1);
+        boardDtosList.add(trelloBoardDtoId2);
 
     }
 
     @Test
     public void mapToBoardTest() {
         //Given
+        when(mapper.mapToBoard(trelloBoardDtoId1)).thenReturn(trelloBoardId1);
         //When
-        TrelloBoard trelloBoardAfterMap = mapper.mapToBoard(trelloBoardDtoId3);
+        TrelloBoard trelloBoardAfterMap = mapper.mapToBoard(trelloBoardDtoId1);
         //Then
-        assertEquals(trelloBoardDtoId3.getId(),trelloBoardAfterMap.getId());
-        assertEquals(trelloBoardDtoId3.getLists(),trelloBoardAfterMap.getLists());
-        assertEquals(trelloBoardDtoId3.getName(),trelloBoardAfterMap.getName());
+        assertEquals("1", trelloBoardAfterMap.getId());
+        assertEquals(0, trelloBoardAfterMap.getLists().size());
+        assertEquals("test name id 1", trelloBoardAfterMap.getName());
     }
 
     @Test
     public void mapToBoardsTest() {
         //Given
+        when(mapper.mapToBoards(boardDtosList)).thenReturn(boardsList);
         //When
         List<TrelloBoard> boardsListAfterMap = mapper.mapToBoards(boardDtosList);
         //Then
-        assertFalse(boardsListAfterMap.isEmpty());
-        assertEquals(boardsListAfterMap.size(),boardDtosList.size());
-        assertEquals(boardsListAfterMap.get(0).getId(),boardDtosList.get(0).getId());
-        assertEquals(boardsListAfterMap.get(0).getName(),boardDtosList.get(0).getName());
-        assertEquals(boardsListAfterMap.get(0).getLists(),boardDtosList.get(0).getLists());
-        assertEquals(boardsListAfterMap.get(1).getId(),boardDtosList.get(1).getId());
-        assertEquals(boardsListAfterMap.get(1).getName(),boardDtosList.get(1).getName());
-        assertEquals(boardsListAfterMap.get(1).getLists(),boardDtosList.get(1).getLists());
+        assertEquals(2, boardsListAfterMap.size());
+        assertEquals("1", boardsListAfterMap.get(0).getId());
+        assertEquals("test name id 1", boardsListAfterMap.get(0).getName());
+        assertTrue(boardsListAfterMap.get(0).getLists().isEmpty());
+        assertEquals("2", boardsListAfterMap.get(1).getId());
+        assertEquals("test name id 2", boardsListAfterMap.get(1).getName());
+        assertTrue(boardsListAfterMap.get(1).getLists().isEmpty());
     }
 
     @Test
     public void mapToBoardDtoTest() {
         //Given
+        when(mapper.mapToBoardDto(trelloBoardId2)).thenReturn(trelloBoardDtoId2);
         //When
-        TrelloBoardDto trelloBoardDtoAfterMap = mapper.mapToBoardDto(trelloBoardId1);
+        TrelloBoardDto trelloBoardDtoAfterMap = mapper.mapToBoardDto(trelloBoardId2);
         //Then
-        assertEquals(trelloBoardDtoAfterMap.getId(),trelloBoardId1.getId());
-        assertEquals(trelloBoardDtoAfterMap.getLists(),trelloBoardId1.getLists());
-        assertEquals(trelloBoardDtoAfterMap.getName(),trelloBoardId1.getName());
+        assertEquals("2", trelloBoardDtoAfterMap.getId());
+        assertEquals(0, trelloBoardDtoAfterMap.getLists().size());
+        assertEquals("test name id 2", trelloBoardDtoAfterMap.getName());
     }
 
     @Test
     public void mapToBoardsDtoTest() {
         //Given
+        when(mapper.mapToBoardsDto(boardsList)).thenReturn(boardDtosList);
         //When
-        List<TrelloBoardDto> boardDtosListAfterMap = mapper.mapToBoardsDto(boardsList);
+        List<TrelloBoardDto> boardsListAfterMap = mapper.mapToBoardsDto(boardsList);
         //Then
-        assertEquals(boardDtosListAfterMap.size(),boardsList.size());
-        assertFalse(boardDtosListAfterMap.isEmpty());
-        assertEquals(boardDtosListAfterMap.get(0).getName(),boardsList.get(0).getName());
-        assertEquals(boardDtosListAfterMap.get(0).getLists(),boardsList.get(0).getLists());
-        assertEquals(boardDtosListAfterMap.get(0).getId(),boardsList.get(0).getId());
-        assertEquals(boardDtosListAfterMap.get(1).getName(),boardsList.get(1).getName());
-        assertEquals(boardDtosListAfterMap.get(1).getLists(),boardsList.get(1).getLists());
-        assertEquals(boardDtosListAfterMap.get(1).getId(),boardsList.get(1).getId());
+        assertEquals(2, boardsListAfterMap.size());
+        assertEquals("1", boardsListAfterMap.get(0).getId());
+        assertEquals("test name id 1", boardsListAfterMap.get(0).getName());
+        assertTrue(boardsListAfterMap.get(0).getLists().isEmpty());
+        assertEquals("2", boardsListAfterMap.get(1).getId());
+        assertEquals("test name id 2", boardsListAfterMap.get(1).getName());
+        assertTrue(boardsListAfterMap.get(1).getLists().isEmpty());
     }
 }
