@@ -24,6 +24,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('mysql:mysql-connector-java')
 //	compile('org.postgresql:postgresql')
+	compile('com.google.code.gson:gson:2.8.6')
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
