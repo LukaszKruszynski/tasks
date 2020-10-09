@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('mysql:mysql-connector-java')
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.4.RELEASE'
 //	compile('org.postgresql:postgresql')
 	compile('com.google.code.gson:gson:2.8.6')
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
