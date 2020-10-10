@@ -22,7 +22,7 @@ public class EmailScheduler {
 
     private static final String SUBJECT = "Tasks: Once a day email";
 
-    @Scheduled(cron = "0 0 10 * * *")
+//    @Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long count = taskRepository.count();
         String numeral = (count == 1) ? "task" : "tasks";
