@@ -3,16 +3,21 @@ package com.crud.tasks.scheduler;
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
 import com.crud.tasks.repository.TaskRepository;
-import com.crud.tasks.service.SimpleEmailService;
+import com.crud.tasks.service.MailCreatorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EmailScheduler {
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Autowired
-    private SimpleEmailService emailService;
+    private MailCreatorService mailCreatorService;
 
     @Autowired
     private TaskRepository taskRepository;
@@ -20,16 +25,26 @@ public class EmailScheduler {
     @Autowired
     private AdminConfig adminConfig;
 
-    private static final String SUBJECT = "Tasks: Once a day email";
+    private static final String SUBJECT = "Tasks: Tasks quantity";
 
-//    @Scheduled(fixedDelay = 10000)
-    public void sendInformationEmail() {
+    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(mailCreatorService.buildInfoQuantityTasksOnceADay(mail.getMessage()), true);
+        };
+    }
+
+    @Scheduled(cron = "0 0 8 * * *")
+    public void sendInformationEmailQuantityTasks() {
         long count = taskRepository.count();
         String numeral = (count == 1) ? "task" : "tasks";
-        emailService.send(new Mail(
-                adminConfig.getAdminMail(),
+        Mail mail = new Mail(adminConfig.getAdminMail(),
                 SUBJECT,
-                "Currently in database you got: " + count + " " + numeral + ".", null)
-        );
+                "Currently in database you got: " + count + " " + numeral + ".");
+        MimeMessagePreparator mimeMessage = createMimeMessage(mail);
+        javaMailSender.send(mimeMessage);
     }
+
 }

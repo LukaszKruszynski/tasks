@@ -35,15 +35,23 @@ public class MailCreatorService {
         context.setVariable("app_name", adminConfig.getAppName());
         context.setVariable("app_version", adminConfig.getAppVersion());
         context.setVariable("app_rights", adminConfig.getAppRights());
-        context.setVariable("show_button", false);
+        context.setVariable("show_button", true);
         context.setVariable("is_friend", false);
         context.setVariable("admin_config", adminConfig);
         context.setVariable("application_functionality",functionality);
         return templateEngine.process("mail/created-trello-card-mail", context);
     }
-    @Scheduled(cron = "0 8 * * mon-fri")
-    public String infoQuantityTasksOnceADay(String message) {
+
+    public String buildInfoQuantityTasksOnceADay(String message) {
         Context context = new Context();
+        context.setVariable("message",message);
+        context.setVariable("tasks_url", CRUD_URL);
+        context.setVariable("button", "show your tasks");
+        context.setVariable("app_name", adminConfig.getAppName());
+        context.setVariable("app_version", adminConfig.getAppVersion());
+        context.setVariable("app_rights", adminConfig.getAppRights());
+        context.setVariable("admin_config", adminConfig);
+        context.setVariable("bye_message","Enjoy your work!");
         return templateEngine.process("mail/info-quantity-tasks",context);
     }
 }
