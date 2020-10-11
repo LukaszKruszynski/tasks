@@ -11,18 +11,18 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/v1/trello/")
+@RequestMapping("/v1/trello")
 public class TrelloController {
 
     @Autowired
     private TrelloFacade facade;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
+    @GetMapping(value = "/boards")
     public List<TrelloBoardDto> getTrelloBoards() {
         return facade.fetchTrelloBoards();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")
+    @PostMapping(value = "/cards")
     public CreatedTrelloCardDto createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
         return facade.createCard(trelloCardDto);
     }
